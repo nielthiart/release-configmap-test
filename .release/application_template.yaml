@@ -14,17 +14,19 @@ resources:
     limits: 1Gi
     requests: 100Mi
   replicas: 1
-services:
-- name: testservice
-  image: busybox
+- name: busyexample
+  image: nielthiart/release-configmap-test/busyexample
   has_repo: true
+  build:
+    context: "."
+    dockerfile: "./Dockerfile"
   command:
   - sh
   args:
   - "-c"
-  - tree /etc/configmaptest && sleep infinity
+  - ls -laF /etc/file1.txt && ls -laF /etc/configmaptest/file2.txt && sleep infinity
   configmap:
-  - mount_path: "/etc/configmaptest/file1.txt"
+  - mount_path: "/etc/file1.txt"
     repo_path: "./file1.txt"
     name: file-one
   - mount_path: "/etc/configmaptest/file2.txt"
@@ -35,12 +37,12 @@ workflows:
   parallelize:
   - step: services
     tasks:
-    - services.testservice
+    - services.busyexample
 - name: patch
   parallelize:
   - step: services
     tasks:
-    - services.testservice
+    - services.busyexample
 - name: teardown
   parallelize:
   - step: remove-environment
