@@ -1,0 +1,52 @@
+---
+auto_deploy: true
+context: release-cluster
+domain: rls.sh
+repo_name: nielthiart/release-configmap-test
+environment_templates:
+- name: ephemeral
+- name: permanent
+resources:
+  cpu:
+    limits: 1000m
+    requests: 100m
+  memory:
+    limits: 1Gi
+    requests: 100Mi
+  replicas: 1
+services:
+- name: testservice
+  image: alpine
+  has_repo: false
+  command:
+  - "/bin/sh"
+  - tree
+  - "-a"
+  - "/etc/configmaptest"
+  - "&&"
+  - tail
+  - "-f"
+  - "/dev/null"
+  configmap:
+  - mount_path: "/etc/configmaptest/file1.yaml"
+    repo_path: "./file1.yaml"
+    name: file1
+  - mount_path: "/etc/configmaptest/file2.yaml"
+    repo_path: "./file2.yaml"
+    name: file2
+workflows:
+- name: setup
+  parallelize:
+  - step: services
+    tasks:
+    - services.testservice
+- name: patch
+  parallelize:
+  - step: services
+    tasks:
+    - services.testservice
+- name: teardown
+  parallelize:
+  - step: remove-environment
+    tasks:
+    - release.remove_environment
