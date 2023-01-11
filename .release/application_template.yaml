@@ -14,6 +14,7 @@ resources:
     limits: 1Gi
     requests: 100Mi
   replicas: 1
+services:
 - name: busyexample
   image: nielthiart/release-configmap-test/busyexample
   has_repo: true
