@@ -17,23 +17,19 @@ resources:
 services:
 - name: testservice
   image: busybox
-  has_repo: false
+  has_repo: true
   command:
-  - "sh"
-  - tree
-  - "-a"
-  - "/etc/configmaptest"
-  - "&&"
-  - tail
-  - "-f"
-  - "/dev/null"
+  - sh
+  args:
+  - "-c"
+  - tree /etc/configmaptest && sleep infinity
   configmap:
-  - mount_path: "/etc/configmaptest/file1.yaml"
-    repo_path: "./file1.yaml"
-    name: file1
-  - mount_path: "/etc/configmaptest/file2.yaml"
-    repo_path: "./file2.yaml"
-    name: file2
+  - mount_path: "/etc/configmaptest/file1.txt"
+    repo_path: "./file1.txt"
+    name: file-one
+  - mount_path: "/etc/configmaptest/file2.txt"
+    repo_path: "./file2.txt"
+    name: file-two
 workflows:
 - name: setup
   parallelize:
