@@ -25,7 +25,7 @@ services:
   - sh
   args:
   - "-c"
-  - tree /etc/configmaptest && sleep infinity
+  - ls -F /etc/configmaptest/ && sleep infinity
   configmap:
   - mount_path: "/etc/configmaptest/file1.txt"
     repo_path: "./file1.txt"
