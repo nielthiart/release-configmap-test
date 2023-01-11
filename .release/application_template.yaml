@@ -16,10 +16,10 @@ resources:
   replicas: 1
 services:
 - name: testservice
-  image: alpine
+  image: busybox
   has_repo: false
   command:
-  - "/bin/sh"
+  - "sh"
   - tree
   - "-a"
   - "/etc/configmaptest"
