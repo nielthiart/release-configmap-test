@@ -25,9 +25,9 @@ services:
   - sh
   args:
   - "-c"
-  - ls -laF /etc/file1.txt && ls -laF /etc/configmaptest/file2.txt && sleep infinity
+  - tree /etc/configmaptest && sleep infinity
   configmap:
-  - mount_path: "/etc/file1.txt"
+  - mount_path: "/etc/configmaptest/file1.txt"
     repo_path: "./file1.txt"
     name: file-one
   - mount_path: "/etc/configmaptest/file2.txt"
